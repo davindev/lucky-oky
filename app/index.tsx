@@ -1,15 +1,22 @@
-import { useState } from 'react';
+import { useContext, useCallback } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { useBatteryLevel } from 'expo-battery';
 
-const MAX_BATTERY_LEVEL = 5;
+import { UserContext } from '@/libs/Provider';
+import { MAX_BATTERY_LEVEL } from '@/constants/Battery';
 
 export default function HomeScreen() {
-  const [nickname, setNickname] = useState(''); // TODO 전역 상태로 관리
+  const { nickname, setUser } = useContext(UserContext);
 
   const initialBatteryLevel = useBatteryLevel();
   const batteryLevel = +initialBatteryLevel.toFixed(2) * 100;
+
+  const handleChangeNickname = useCallback((nickname: string) => {
+    if (typeof setUser === 'function') {
+      setUser((current) => ({ ...current, nickname }));
+    }
+  }, []);
 
   if (batteryLevel < 0) {
     return (
@@ -34,7 +41,7 @@ export default function HomeScreen() {
         <TextInput
           value={nickname}
           placeholder="닉네임을 입력해!"
-          onChangeText={setNickname}
+          onChangeText={handleChangeNickname}
         />
         <Link href="/chat">입장하기</Link>
       </View>
