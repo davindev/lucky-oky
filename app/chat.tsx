@@ -1,8 +1,9 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 import { UserContext } from '@/libs/Provider';
+import useBatteryLevel from '@/hooks/useBatteryLevel';
 
 interface Chat {
   nickname: string;
@@ -12,38 +13,40 @@ interface Chat {
 }
 
 export default function ChatScreen() {
-  const [chats, setChats] = useState<any>();
-  const [currentMessage, setCurrentMessage] = useState('');
+  const batteryLevel = useBatteryLevel();
 
   const { nickname } = useContext(UserContext);
 
-  const store = firestore().collection('chats');
+  const [chats, setChats] = useState<any>();
+  const [currentMessage, setCurrentMessage] = useState('');
 
   useEffect(() => {
-    const subscriber = store.onSnapshot((QuerySnapshot) => {
+    const subscriber = firestore().collection('chats').onSnapshot((QuerySnapshot) => {
       setChats(QuerySnapshot);
     });
 
     return subscriber;
   }, []);
 
+  const handleSendMessage = useCallback(() => {
+    firestore().collection('chats').add({
+      nickname,
+      battery_level: batteryLevel,
+      timestamp: new Date().toISOString(),
+      message: currentMessage,
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <TextInput
         value={currentMessage}
-        placeholder="메세지를 입력해!"
+        placeholder="메세지를 입력해"
         onChangeText={(message) => setCurrentMessage(message)}
       />
       <Button
-        onPress={() => {
-          store.add({
-            nickname,
-            battery_level: 0, // TODO
-            timestamp: new Date().toISOString(),
-            message: currentMessage,
-          });
-        }}
         title="전송"
+        onPress={handleSendMessage}
       />
     </View>
   );
