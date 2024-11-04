@@ -1,21 +1,47 @@
-import { useContext, useCallback } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { useContext, useState, useCallback } from 'react';
+import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import { router } from 'expo-router';
 
 import { UserContext } from '@/libs/Provider';
 import useBatteryLevel from '@/hooks/useBatteryLevel';
 import { MAX_BATTERY_LEVEL } from '@/constants/Battery';
 
+const collection = firestore().collection('users');
+
 export default function HomeScreen() {
+  const [nickname, setNickname] = useState('');
   const batteryLevel = useBatteryLevel();
+  const { setUser } = useContext(UserContext);
 
-  const { nickname, setUser } = useContext(UserContext);
+  const saveUser = useCallback(async () => {
+    const userIds: number[] = [];
+    const docs = await collection.get();
 
-  const handleChangeNickname = useCallback((nickname: string) => {
+    docs.forEach((doc) => {
+      const user = doc.data();
+      userIds.push(user.id);
+    });
+
+    const userId = userIds.length > 0
+      ? userIds[userIds.length - 1] + 1
+      : 0;
+    const newUser = {
+      id: userId,
+      nickname,
+    };
+
+    await collection.add(newUser);
+
     if (typeof setUser === 'function') {
-      setUser((current) => ({ ...current, nickname }));
+      setUser(newUser);
     }
-  }, []);
+  }, [nickname]);
+
+  const handleNavigateToChat = useCallback(async () => {
+    await saveUser();
+    router.push('/chat');
+  }, [router, saveUser]);
 
   if (batteryLevel > MAX_BATTERY_LEVEL) {
     return (
@@ -32,9 +58,13 @@ export default function HomeScreen() {
         <TextInput
           value={nickname}
           placeholder="닉네임을 입력해"
-          onChangeText={handleChangeNickname}
+          onChangeText={setNickname}
         />
-        <Link href="/chat">입장하기</Link>
+        <Button
+          title="입장하기"
+          disabled={!nickname}
+          onPress={handleNavigateToChat}
+        />
       </View>
     </View>
   );
