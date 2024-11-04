@@ -5,32 +5,33 @@ import firestore from '@react-native-firebase/firestore';
 import { UserContext } from '@/libs/Provider';
 import useBatteryLevel from '@/hooks/useBatteryLevel';
 
+const collection = firestore().collection('chats');
+
 interface Chat {
+  id: number;
   nickname: string;
   battery_level: number;
   timestamp: string;
   message: string;
 }
 
-const collection = firestore().collection('chats');
-
 export default function ChatScreen() {
   const batteryLevel = useBatteryLevel();
-
-  const { nickname } = useContext(UserContext);
+  const { id, nickname } = useContext(UserContext);
 
   const [chats, setChats] = useState<Chat[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
 
   useEffect(() => {
     const subscriber = collection.onSnapshot((querySnapshot) => {
-      const data: Chat[] = [];
+      const docs: Chat[] = [];
 
       querySnapshot.forEach((docSnapshot) => {
-        data.push(docSnapshot.data() as Chat);
-      })
+        const doc = docSnapshot.data() as Chat;
+        docs.push(doc);
+      });
 
-      setChats(data);
+      setChats(docs);
     });
 
     return subscriber;
@@ -43,6 +44,7 @@ export default function ChatScreen() {
     }
 
     await collection.add({
+      id,
       nickname,
       battery_level: batteryLevel,
       timestamp: new Date().toISOString(),
@@ -50,12 +52,12 @@ export default function ChatScreen() {
     });
 
     setCurrentMessage('');
-  }, [currentMessage]);
+  }, [id, nickname, batteryLevel, currentMessage]);
 
   return (
     <View style={styles.container}>
       {chats.map((chat) => (
-        <View key={chat.timestamp} style={styles.messageBox}>
+        <View key={`${chat.id}${chat.timestamp}`} style={[styles.chatBox, chat.id === id ? styles.myChatBox : null]}>
           <Text>nickname: {chat.nickname}</Text>
           <Text>battery_level: {chat.battery_level}</Text>
           <Text>timestamp: {chat.timestamp}</Text>
@@ -82,8 +84,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  messageBox: {
+  chatBox: {
     marginVertical: 10,
-    backgroundColor: 'pink'
+    backgroundColor: 'pink',
   },
+  myChatBox: {
+    backgroundColor: 'blue',
+  }
 });
