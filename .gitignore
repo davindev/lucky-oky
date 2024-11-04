@@ -19,6 +19,10 @@ web-build/
 expo-env.d.ts
 # @end expo-cli
 
-#firebase
+# firebase
 google-services.json
 GoogleService-Info.plist
+
+# build
+ios/
+android/

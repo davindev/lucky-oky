@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 import { UserContext } from '@/libs/Provider';
@@ -12,33 +12,56 @@ interface Chat {
   message: string;
 }
 
+const collection = firestore().collection('chats');
+
 export default function ChatScreen() {
   const batteryLevel = useBatteryLevel();
 
   const { nickname } = useContext(UserContext);
 
-  const [chats, setChats] = useState<any>();
+  const [chats, setChats] = useState<Chat[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
 
   useEffect(() => {
-    const subscriber = firestore().collection('chats').onSnapshot((QuerySnapshot) => {
-      setChats(QuerySnapshot);
+    const subscriber = collection.onSnapshot((querySnapshot) => {
+      const data: Chat[] = [];
+
+      querySnapshot.forEach((docSnapshot) => {
+        data.push(docSnapshot.data() as Chat);
+      })
+
+      setChats(data);
     });
 
     return subscriber;
   }, []);
 
-  const handleSendMessage = useCallback(() => {
-    firestore().collection('chats').add({
+  const handleSendMessage = useCallback(async () => {
+    // TODO 유효성 검사
+    if (!currentMessage) {
+      return;
+    }
+
+    await collection.add({
       nickname,
       battery_level: batteryLevel,
       timestamp: new Date().toISOString(),
       message: currentMessage,
     });
-  }, []);
+
+    setCurrentMessage('');
+  }, [currentMessage]);
 
   return (
     <View style={styles.container}>
+      {chats.map((chat) => (
+        <View key={chat.timestamp} style={styles.messageBox}>
+          <Text>nickname: {chat.nickname}</Text>
+          <Text>battery_level: {chat.battery_level}</Text>
+          <Text>timestamp: {chat.timestamp}</Text>
+          <Text>message: {chat.message}</Text>
+        </View>
+      ))}
       <TextInput
         value={currentMessage}
         placeholder="메세지를 입력해"
@@ -58,5 +81,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  messageBox: {
+    marginVertical: 10,
+    backgroundColor: 'pink'
   },
 });
