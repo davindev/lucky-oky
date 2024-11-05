@@ -1,9 +1,24 @@
-import { useContext, useState, useEffect, useCallback } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import {
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  Alert,
+  StyleSheet,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import { router } from 'expo-router';
+import { getBatteryLevelAsync } from 'expo-battery';
 
 import { UserContext } from '@/libs/Provider';
 import useBatteryLevel from '@/hooks/useBatteryLevel';
+import { MAX_BATTERY_LEVEL } from '@/constants/Battery';
 
 const collection = firestore().collection('chats');
 
@@ -22,6 +37,28 @@ export default function ChatScreen() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
 
+  // 배터리 잔량을 60초 간격으로 확인
+  useEffect(() => {
+    new Promise((resolve) => {
+      const intervalId = setInterval(async () => {
+        const initialBatteryLevel = await getBatteryLevelAsync();
+        const realTimeBatteryLevel = +initialBatteryLevel.toFixed(2) * 100;
+
+        if (realTimeBatteryLevel > MAX_BATTERY_LEVEL) {
+          resolve(realTimeBatteryLevel);
+          clearInterval(intervalId);
+
+          Alert.alert(
+            '배터리가 충전됐어!',
+            `배터리가 ${MAX_BATTERY_LEVEL}% 이하가 되면 다시 와줘~`,
+            [{ text: '알겠어', onPress: () => router.push('/') }],
+          );
+        }
+      }, 60_000);
+    });
+  }, []);
+
+  // firestore 변경 사항 구독
   useEffect(() => {
     const subscriber = collection.onSnapshot((querySnapshot) => {
       const docs: Chat[] = [];
