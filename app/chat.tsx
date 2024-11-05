@@ -37,26 +37,16 @@ export default function ChatScreen() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
 
-  // 배터리 잔량을 60초 간격으로 확인
+  // 배터리 잔량 확인
   useEffect(() => {
-    new Promise((resolve) => {
-      const intervalId = setInterval(async () => {
-        const initialBatteryLevel = await getBatteryLevelAsync();
-        const realTimeBatteryLevel = +initialBatteryLevel.toFixed(2) * 100;
-
-        if (realTimeBatteryLevel > MAX_BATTERY_LEVEL) {
-          resolve(realTimeBatteryLevel);
-          clearInterval(intervalId);
-
-          Alert.alert(
-            '배터리가 충전됐어!',
-            `배터리가 ${MAX_BATTERY_LEVEL}% 이하가 되면 다시 와줘~`,
-            [{ text: '알겠어', onPress: () => router.push('/') }],
-          );
-        }
-      }, 60_000);
-    });
-  }, []);
+    if (batteryLevel > MAX_BATTERY_LEVEL) {
+      Alert.alert(
+        '배터리가 충전됐어!',
+        `배터리가 ${MAX_BATTERY_LEVEL}% 이하가 되면 다시 와줘~`,
+        [{ text: '알겠어', onPress: () => router.push('/') }],
+      );
+    }
+  }, [batteryLevel]);
 
   // firestore 변경 사항 구독
   useEffect(() => {
