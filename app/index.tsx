@@ -1,5 +1,5 @@
-import { useContext, useState, useCallback } from 'react';
-import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import { useState, useContext, useCallback } from 'react';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { router } from 'expo-router';
 
@@ -11,10 +11,16 @@ const collection = firestore().collection('users');
 
 export default function HomeScreen() {
   const [nickname, setNickname] = useState('');
+
   const batteryLevel = useBatteryLevel();
+
   const { setUser } = useContext(UserContext);
 
-  const saveUser = useCallback(async () => {
+  const generateRandomId = useCallback(() => {
+    return Math.floor(Math.random() * 10_000) + 1;
+  }, []);
+
+  const createUser = useCallback(async () => {
     const userIds: number[] = [];
     const docs = await collection.get();
 
@@ -23,9 +29,12 @@ export default function HomeScreen() {
       userIds.push(user.id);
     });
 
-    const userId = userIds.length > 0
-      ? userIds[userIds.length - 1] + 1
-      : 0;
+    let userId = generateRandomId();
+
+    while (userIds.includes(userId)) {
+      userId = generateRandomId();
+    }
+
     const newUser = {
       id: userId,
       nickname,
@@ -36,17 +45,19 @@ export default function HomeScreen() {
     if (typeof setUser === 'function') {
       setUser(newUser);
     }
-  }, [nickname]);
+  }, [nickname, generateRandomId]);
 
   const handleNavigateToChat = useCallback(async () => {
-    await saveUser();
+    await createUser();
     router.push('/chat');
-  }, [router, saveUser]);
+  }, [router, createUser]);
 
   if (batteryLevel > MAX_BATTERY_LEVEL) {
     return (
       <View style={styles.container}>
-        <Text>배터리가 {MAX_BATTERY_LEVEL}% 이하일 때 다시 와줘</Text>
+        <Text>
+          배터리가 {MAX_BATTERY_LEVEL}% 이하일 때 다시 와줬으면 좋겠어~! 🍀💖
+        </Text>
       </View>
     );
   }
@@ -54,10 +65,10 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View>
-        <Text>배터리가 {batteryLevel}% 남았다니 완전 럭키 비키잖앙</Text>
+        <Text>배터리가 {batteryLevel}% 남았다니 완전 럭키 비키잖앙~! 🍀✨</Text>
         <TextInput
           value={nickname}
-          placeholder="닉네임을 입력해"
+          placeholder="닉네임을 입력해 줘~!"
           onChangeText={setNickname}
         />
         <Button

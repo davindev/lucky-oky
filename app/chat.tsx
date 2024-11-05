@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { router } from 'expo-router';
-import { getBatteryLevelAsync } from 'expo-battery';
 
 import { UserContext } from '@/libs/Provider';
 import useBatteryLevel from '@/hooks/useBatteryLevel';
@@ -23,16 +22,17 @@ import { MAX_BATTERY_LEVEL } from '@/constants/Battery';
 const collection = firestore().collection('chats');
 
 interface Chat {
-  id: number;
-  nickname: string;
+  user_id: number;
+  user_nickname: string;
   battery_level: number;
   timestamp: string;
   message: string;
 }
 
 export default function ChatScreen() {
+  const { id: userId, nickname: userNickname } = useContext(UserContext);
+
   const batteryLevel = useBatteryLevel();
-  const { id, nickname } = useContext(UserContext);
 
   const [chats, setChats] = useState<Chat[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -41,9 +41,9 @@ export default function ChatScreen() {
   useEffect(() => {
     if (batteryLevel > MAX_BATTERY_LEVEL) {
       Alert.alert(
-        '배터리가 충전됐어!',
-        `배터리가 ${MAX_BATTERY_LEVEL}% 이하가 되면 다시 와줘~`,
-        [{ text: '알겠어', onPress: () => router.push('/') }],
+        '배터리가 충전됐어~! 완전 최고야! ⚡️💖',
+        `배터리가 ${MAX_BATTERY_LEVEL}% 이하가 되면 다시 와줘~! 기다리고 있을게~! 🌟💖`,
+        [{ text: '알겠어~! 😊💖', onPress: () => router.push('/') }],
       );
     }
   }, [batteryLevel]);
@@ -54,8 +54,8 @@ export default function ChatScreen() {
       const docs: Chat[] = [];
 
       querySnapshot.forEach((docSnapshot) => {
-        const doc = docSnapshot.data() as Chat;
-        docs.push(doc);
+        const chat = docSnapshot.data() as Chat;
+        docs.push(chat);
       });
 
       setChats(docs);
@@ -65,27 +65,26 @@ export default function ChatScreen() {
   }, []);
 
   const handleSendMessage = useCallback(async () => {
-    // TODO 유효성 검사
-    if (!currentMessage) {
-      return;
-    }
-
     await collection.add({
-      id,
-      nickname,
+      user_id: userId,
+      user_nickname: userNickname,
       battery_level: batteryLevel,
       timestamp: new Date().toISOString(),
       message: currentMessage,
     });
 
     setCurrentMessage('');
-  }, [id, nickname, batteryLevel, currentMessage]);
+  }, [userId, userNickname, batteryLevel, currentMessage]);
 
   return (
     <View style={styles.container}>
+      <Button
+        title="홈으로 이동할게~! 🏡💖"
+        onPress={router.back}
+      />
       {chats.map((chat) => (
-        <View key={`${chat.id}${chat.timestamp}`} style={[styles.chatBox, chat.id === id ? styles.myChatBox : null]}>
-          <Text>nickname: {chat.nickname}</Text>
+        <View key={`${chat.user_id}${chat.timestamp}`} style={[styles.chatBox, chat.user_id === userId ? styles.myChatBox : null]}>
+          <Text>nickname: {chat.user_nickname}</Text>
           <Text>battery_level: {chat.battery_level}</Text>
           <Text>timestamp: {chat.timestamp}</Text>
           <Text>message: {chat.message}</Text>
@@ -93,11 +92,12 @@ export default function ChatScreen() {
       ))}
       <TextInput
         value={currentMessage}
-        placeholder="메세지를 입력해"
+        placeholder="메세지를 입력해줘~! 💌✨"
         onChangeText={(message) => setCurrentMessage(message)}
       />
       <Button
         title="전송"
+        disabled={!currentMessage}
         onPress={handleSendMessage}
       />
     </View>
