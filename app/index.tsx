@@ -56,7 +56,7 @@ export default function HomeScreen() {
     return (
       <View style={styles.container}>
         <Text>
-          배터리가 {MAX_BATTERY_LEVEL}% 이하일 때 다시 와줬으면 좋겠어~! 🍀💖
+          배터리가 {MAX_BATTERY_LEVEL}% 이하일 때 다시 와줬으면 좋겠어~! 💖
         </Text>
       </View>
     );
@@ -65,10 +65,15 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View>
-        <Text>배터리가 {batteryLevel}% 남았다니 완전 럭키 비키잖앙~! 🍀✨</Text>
+        <Text style={styles.subTitle}>
+          배터리가 {batteryLevel}% 남았다니
+        </Text>
+        <Text style={styles.subTitle}>
+          완전 럭키 비키잖앙~! ✨
+        </Text>
         <TextInput
           value={nickname}
-          placeholder="닉네임을 입력해 줘~!"
+          placeholder="닉네임을 입력해 줘!"
           onChangeText={setNickname}
         />
         <Button
@@ -87,5 +92,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  subTitle: {
+    fontFamily: 'Pretendard',
+    textAlign: 'center',
+    lineHeight: 20,
   },
 });
