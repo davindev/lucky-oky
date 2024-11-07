@@ -19,6 +19,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     PretendardRegular: require('../assets/fonts/Pretendard-Regular.ttf'),
+    PretendardMedium: require('../assets/fonts/Pretendard-Medium.ttf'),
     PretendardBold: require('../assets/fonts/Pretendard-Bold.ttf'),
   });
 
