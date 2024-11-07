@@ -1,5 +1,5 @@
 import { useState, useContext, useCallback } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { router } from 'expo-router';
 
@@ -64,23 +64,28 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.inner}>
         <Text style={styles.subTitle}>
-          배터리가 {batteryLevel}% 남았다니
+          배터리가 <Text style={styles.subTitleBold}>{batteryLevel}%</Text> 남았다니
         </Text>
         <Text style={styles.subTitle}>
-          완전 럭키 비키잖앙~! ✨
+          완전 럭키 비키잖앙~! 🍒
         </Text>
         <TextInput
+          style={styles.input}
           value={nickname}
-          placeholder="닉네임을 입력해 줘!"
+          maxLength={10}
+          placeholder="닉네임을 입력해!"
+          placeholderTextColor="rgb(153, 153, 153)"
           onChangeText={setNickname}
         />
-        <Button
-          title="입장하기"
+        <Pressable
+          style={styles.button}
           disabled={!nickname}
           onPress={handleNavigateToChat}
-        />
+        >
+          <Text style={styles.buttonLabel}>입장하기</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -92,10 +97,46 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgb(250, 236, 188)',
   },
+
+  inner: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent:'center',
+  },
+
   subTitle: {
     fontFamily: 'Pretendard',
+    fontSize: 16,
+    lineHeight: 24,
     textAlign: 'center',
-    lineHeight: 20,
+  },
+  subTitleBold: {
+    fontWeight: 'bold',
+    color: 'rgba(235, 73, 64, 1)',
+  },
+
+  input: {
+    width: 240,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    backgroundColor: 'rgb(255, 255, 255)',
+    borderRadius: 8,
+    fontFamily: 'Pretendard',
+    fontSize: 14,
+  },
+
+  button: {
+    width: 100,
+    paddingVertical: 10,
+    backgroundColor: 'rgb(188, 214, 172)',
+    borderRadius: 8,
+  },
+  buttonLabel: {
+    fontFamily: 'Pretendard',
+    fontSize: 14,
+    fontWeight: 500,
+    textAlign: 'center',
   },
 });
