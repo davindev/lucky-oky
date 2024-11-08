@@ -84,7 +84,7 @@ export default function ChatScreen() {
       />
       {chats.map((chat) => (
         <View key={`${chat.user_id}${chat.timestamp}`} style={[styles.chatBox, chat.user_id === userId ? styles.myChatBox : null]}>
-          <Text>nickname: {chat.user_nickname}</Text>
+          <Text>nickname: {chat.user_nickname}#{chat.user_id}</Text>
           <Text>battery_level: {chat.battery_level}</Text>
           <Text>timestamp: {chat.timestamp}</Text>
           <Text>message: {chat.message}</Text>
