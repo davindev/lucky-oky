@@ -1,6 +1,7 @@
 import { useState, useContext, useCallback } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import Draggable from 'react-native-draggable';
 import { router } from 'expo-router';
 
 import { UserContext } from '@/libs/Provider';
@@ -64,6 +65,13 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      <Draggable x={50} y={50}>
+        <Text style={styles.clover01}>🍀</Text>
+      </Draggable>
+      <Draggable x={50} y={150}>
+        <Text style={styles.clover01}>☘️</Text>
+      </Draggable>
+
       <View style={styles.inner}>
         <Text style={styles.subTitle}>
           배터리가 <Text style={styles.subTitleBold}>{batteryLevel}%</Text> 남았다니
@@ -98,6 +106,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgb(250, 236, 188)',
+  },
+
+  clover01: {
+    fontSize: 145,
   },
 
   inner: {
