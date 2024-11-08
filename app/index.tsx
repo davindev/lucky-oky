@@ -95,20 +95,27 @@ export default function HomeScreen() {
         </Pressable>
       </View>
 
-      {/* <Image
-        style={styles.fairy}
-        source={require('@/assets/images/fairy.png')}
-      /> */}
+      <Draggable x={150} y={170}>
+        <Image
+          style={styles.fairy}
+          source={require('@/assets/images/fairy.png')}
+        />
+      </Draggable>
 
-
-      {/* <View style={styles.inner}>
-        <Text style={styles.subTitle}>
-          배터리가 <Text style={styles.subTitleBold}>{batteryLevel}%</Text> 남았다니
-        </Text>
-        <Text style={styles.subTitle}>
-          완전 럭키 비키잖앙~! 🧚🏻‍♀️
-        </Text>
-      </View> */}
+      <Draggable x={150} y={170}>
+        <View style={styles.speechBubbleContainer}>
+          <Image
+            style={styles.fairy}
+            source={require('@/assets/images/speech_bubble.png')}
+          />
+          <Text style={styles.text}>
+            배터리가 <Text style={styles.textBold}>{batteryLevel}%</Text> 남았다니
+          </Text>
+          <Text style={styles.text}>
+            완전 럭키 비키잖앙~! ✨
+          </Text>
+        </View>
+      </Draggable>
     </View>
   );
 }
@@ -125,6 +132,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 240,
     resizeMode: 'contain',
+    transform: 'translate(0, -100px)'
   },
 
   inner: {
@@ -157,31 +165,36 @@ const styles = StyleSheet.create({
     color: 'rgb(64, 75, 58)',
   },
 
-  // fairy: {
-  //   position: 'absolute',
-  //   right: -100,
-  //   bottom: 0,
-  //   width: 350,
-  //   resizeMode: 'contain',
-  // },
-  
+  fairy: {
+    width: 350,
+    resizeMode: 'contain',
+  },
+
+  speechBubbleContainer: {
+    position: 'relative',
+  },
+  speechBubble: {
+    width: 100,
+    resizeMode: 'contain',
+  },
+
+  textContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  text: {
+    fontFamily: 'Pretendard',
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  textBold: {
+    fontWeight: 'bold',
+    color: 'rgb(143, 172, 121)',
+  },
 
   // clover01: {
   //   fontSize: 145,
   // },
-
-
-
-  // subTitle: {
-  //   fontFamily: 'Pretendard',
-  //   fontSize: 16,
-  //   lineHeight: 24,
-  //   textAlign: 'center',
-  // },
-  // subTitleBold: {
-  //   fontWeight: 'bold',
-  //   color: 'rgb(143, 172, 121)',
-  // },
-
-
 });
