@@ -1,5 +1,5 @@
 import { useState, useContext, useCallback } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, Image, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Draggable from 'react-native-draggable';
 import { router } from 'expo-router';
@@ -65,20 +65,19 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Draggable x={50} y={50}>
+      {/* <Draggable x={50} y={50}>
         <Text style={styles.clover01}>🍀</Text>
       </Draggable>
       <Draggable x={50} y={150}>
         <Text style={styles.clover01}>☘️</Text>
-      </Draggable>
+      </Draggable> */}
+
+      <Image
+        style={styles.logo}
+        source={require('@/assets/images/logo.png')}
+      />
 
       <View style={styles.inner}>
-        <Text style={styles.subTitle}>
-          배터리가 <Text style={styles.subTitleBold}>{batteryLevel}%</Text> 남았다니
-        </Text>
-        <Text style={styles.subTitle}>
-          완전 럭키 비키잖앙~! 🍒
-        </Text>
         <TextInput
           style={styles.input}
           value={nickname}
@@ -95,6 +94,21 @@ export default function HomeScreen() {
           <Text style={styles.buttonLabel}>입장하기</Text>
         </Pressable>
       </View>
+
+      {/* <Image
+        style={styles.fairy}
+        source={require('@/assets/images/fairy.png')}
+      /> */}
+
+
+      {/* <View style={styles.inner}>
+        <Text style={styles.subTitle}>
+          배터리가 <Text style={styles.subTitleBold}>{batteryLevel}%</Text> 남았다니
+        </Text>
+        <Text style={styles.subTitle}>
+          완전 럭키 비키잖앙~! 🧚🏻‍♀️
+        </Text>
+      </View> */}
     </View>
   );
 }
@@ -104,29 +118,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    position: 'relative',
     backgroundColor: 'rgb(250, 236, 188)',
   },
 
-  clover01: {
-    fontSize: 145,
+  logo: {
+    width: 240,
+    resizeMode: 'contain',
   },
 
   inner: {
     display: 'flex',
-    justifyContent: 'center',
-    alignContent:'center',
-  },
-
-  subTitle: {
-    fontFamily: 'Pretendard',
-    fontSize: 16,
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  subTitleBold: {
-    fontWeight: 'bold',
-    color: 'rgba(235, 73, 64, 1)',
+    rowGap: 14,
+    alignItems:'center',
   },
 
   input: {
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: 100,
+    width: 140,
     paddingVertical: 10,
     backgroundColor: 'rgb(188, 214, 172)',
     borderRadius: 8,
@@ -148,7 +152,36 @@ const styles = StyleSheet.create({
   buttonLabel: {
     fontFamily: 'Pretendard',
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: 'medium',
     textAlign: 'center',
+    color: 'rgb(64, 75, 58)',
   },
+
+  // fairy: {
+  //   position: 'absolute',
+  //   right: -100,
+  //   bottom: 0,
+  //   width: 350,
+  //   resizeMode: 'contain',
+  // },
+  
+
+  // clover01: {
+  //   fontSize: 145,
+  // },
+
+
+
+  // subTitle: {
+  //   fontFamily: 'Pretendard',
+  //   fontSize: 16,
+  //   lineHeight: 24,
+  //   textAlign: 'center',
+  // },
+  // subTitleBold: {
+  //   fontWeight: 'bold',
+  //   color: 'rgb(143, 172, 121)',
+  // },
+
+
 });
