@@ -1,5 +1,12 @@
 import { useState, useContext, useCallback } from 'react';
-import { View, Text, TextInput, Pressable, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  Image,
+  StyleSheet,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Draggable from 'react-native-draggable';
 import { router } from 'expo-router';
@@ -65,55 +72,67 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* <Draggable x={50} y={50}>
+      <Draggable x={280} y={160}>
         <Text style={styles.clover01}>🍀</Text>
       </Draggable>
-      <Draggable x={50} y={150}>
-        <Text style={styles.clover01}>☘️</Text>
-      </Draggable> */}
-
-      <Image
-        style={styles.logo}
-        source={require('@/assets/images/logo.png')}
-      />
+      <Draggable x={-70} y={-60}>
+        <Text style={styles.clover02}>☘️</Text>
+      </Draggable>
+      <Draggable x={180} y={-90}>
+        <Text style={styles.clover03}>☘️</Text>
+      </Draggable>
+      <Draggable x={10} y={410}>
+        <Text style={styles.clover04}>☘️</Text>
+      </Draggable>
+      <Draggable x={100} y={600}>
+        <Text style={styles.clover05}>🍀</Text>
+      </Draggable>
 
       <View style={styles.inner}>
-        <TextInput
-          style={styles.input}
-          value={nickname}
-          maxLength={10}
-          placeholder="닉네임을 입력해!"
-          placeholderTextColor="rgb(153, 153, 153)"
-          onChangeText={setNickname}
+        <Image
+          style={styles.logo}
+          source={require('@/assets/images/logo.png')}
         />
-        <Pressable
-          style={styles.button}
-          disabled={!nickname}
-          onPress={handleNavigateToChat}
-        >
-          <Text style={styles.buttonLabel}>입장하기</Text>
-        </Pressable>
+
+        <View style={styles.field}>
+          <TextInput
+            style={styles.input}
+            value={nickname}
+            maxLength={10}
+            placeholder="닉네임을 입력해!"
+            placeholderTextColor="rgb(153, 153, 153)"
+            onChangeText={setNickname}
+          />
+          <Pressable
+            style={styles.button}
+            disabled={!nickname}
+            onPress={handleNavigateToChat}
+          >
+            <Text style={styles.buttonLabel}>입장하기</Text>
+          </Pressable>
+        </View>
       </View>
 
-      <Draggable x={150} y={170}>
+      <Draggable x={30} y={250}>
         <Image
           style={styles.fairy}
           source={require('@/assets/images/fairy.png')}
         />
       </Draggable>
 
-      <Draggable x={150} y={170}>
+      <Draggable x={20} y={260}>
         <View style={styles.speechBubbleContainer}>
           <Image
-            style={styles.fairy}
+            style={styles.speechBubble}
             source={require('@/assets/images/speech_bubble.png')}
           />
-          <Text style={styles.text}>
-            배터리가 <Text style={styles.textBold}>{batteryLevel}%</Text> 남았다니
-          </Text>
-          <Text style={styles.text}>
-            완전 럭키 비키잖앙~! ✨
-          </Text>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>
+              배터리가 <Text style={styles.textBold}>{batteryLevel}%</Text>{' '}
+              남았다니
+            </Text>
+            <Text style={styles.text}>완전 럭키 비키잖앙~! ✨</Text>
+          </View>
         </View>
       </Draggable>
     </View>
@@ -122,23 +141,26 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
     flex: 1,
     alignItems: 'center',
-    position: 'relative',
     backgroundColor: 'rgb(250, 236, 188)',
+  },
+
+  inner: {
+    flex: 1,
+    justifyContent: 'space-between',
+    zIndex: 99,
+    marginVertical: 100,
   },
 
   logo: {
     width: 240,
-    resizeMode: 'contain',
-    transform: 'translate(0, -100px)'
+    height: 146,
   },
 
-  inner: {
-    display: 'flex',
+  field: {
     rowGap: 14,
-    alignItems:'center',
+    alignItems: 'center',
   },
 
   input: {
@@ -160,41 +182,62 @@ const styles = StyleSheet.create({
   buttonLabel: {
     fontFamily: 'Pretendard',
     fontSize: 14,
-    fontWeight: 'medium',
+    fontWeight: '500',
     textAlign: 'center',
     color: 'rgb(64, 75, 58)',
   },
 
   fairy: {
-    width: 350,
-    resizeMode: 'contain',
+    width: 500,
+    height: 513,
   },
 
   speechBubbleContainer: {
     position: 'relative',
   },
   speechBubble: {
-    width: 100,
-    resizeMode: 'contain',
+    width: 220,
+    height: 103,
   },
 
   textContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
     top: 0,
+    right: 0,
+    bottom: 0,
     left: 0,
   },
   text: {
     fontFamily: 'Pretendard',
-    fontSize: 16,
-    lineHeight: 24,
-    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: '500',
+    lineHeight: 20,
   },
   textBold: {
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: 'rgb(143, 172, 121)',
   },
 
-  // clover01: {
-  //   fontSize: 145,
-  // },
+  clover01: {
+    fontSize: 145,
+    transform: 'rotate(60deg)',
+  },
+  clover02: {
+    fontSize: 145,
+    transform: 'rotate(120deg)',
+  },
+  clover03: {
+    fontSize: 145,
+    transform: 'rotate(-40deg)',
+  },
+  clover04: {
+    fontSize: 145,
+    transform: 'rotate(-40deg)',
+  },
+  clover05: {
+    fontSize: 145,
+    transform: 'rotate(-40deg)',
+  },
 });
