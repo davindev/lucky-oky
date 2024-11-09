@@ -90,13 +90,13 @@ export default function HomeScreen() {
 
       <View style={styles.inner}>
         <Image
-          style={styles.logo}
+          style={styles.logoImage}
           source={require('@/assets/images/logo.png')}
         />
 
-        <View style={styles.field}>
+        <View style={styles.nicknameForm}>
           <TextInput
-            style={styles.input}
+            style={styles.nicknameInput}
             value={nickname}
             maxLength={10}
             placeholder="닉네임을 입력해!"
@@ -104,18 +104,18 @@ export default function HomeScreen() {
             onChangeText={setNickname}
           />
           <Pressable
-            style={styles.button}
+            style={styles.enterButton}
             disabled={!nickname}
             onPress={handleNavigateToChat}
           >
-            <Text style={styles.buttonLabel}>입장하기</Text>
+            <Text style={styles.enterButtonLabel}>입장하기</Text>
           </Pressable>
         </View>
       </View>
 
       <Draggable x={30} y={250}>
         <Image
-          style={styles.fairy}
+          style={styles.fairyImage}
           source={require('@/assets/images/fairy.png')}
         />
       </Draggable>
@@ -123,7 +123,7 @@ export default function HomeScreen() {
       <Draggable x={20} y={260}>
         <View style={styles.speechBubbleContainer}>
           <Image
-            style={styles.speechBubble}
+            style={styles.speechBubbleImage}
             source={require('@/assets/images/speech_bubble.png')}
           />
           <View style={styles.textContainer}>
@@ -153,17 +153,16 @@ const styles = StyleSheet.create({
     marginVertical: 100,
   },
 
-  logo: {
+  logoImage: {
     width: 240,
     height: 146,
   },
 
-  field: {
+  nicknameForm: {
     rowGap: 14,
     alignItems: 'center',
   },
-
-  input: {
+  nicknameInput: {
     width: 240,
     paddingVertical: 10,
     paddingHorizontal: 14,
@@ -172,14 +171,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     fontSize: 14,
   },
-
-  button: {
+  enterButton: {
     width: 140,
     paddingVertical: 10,
     backgroundColor: 'rgb(188, 214, 172)',
     borderRadius: 8,
   },
-  buttonLabel: {
+  enterButtonLabel: {
     fontFamily: 'Pretendard',
     fontSize: 14,
     fontWeight: '500',
@@ -187,7 +185,7 @@ const styles = StyleSheet.create({
     color: 'rgb(64, 75, 58)',
   },
 
-  fairy: {
+  fairyImage: {
     width: 500,
     height: 513,
   },
@@ -195,11 +193,10 @@ const styles = StyleSheet.create({
   speechBubbleContainer: {
     position: 'relative',
   },
-  speechBubble: {
+  speechBubbleImage: {
     width: 220,
     height: 103,
   },
-
   textContainer: {
     alignItems: 'center',
     justifyContent: 'center',
