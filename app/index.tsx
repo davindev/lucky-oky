@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'rgb(250, 236, 188)',
+    backgroundColor: '#faecbc',
   },
 
   inner: {
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     width: 240,
     paddingVertical: 10,
     paddingHorizontal: 14,
-    backgroundColor: 'rgb(255, 255, 255)',
+    backgroundColor: '#ffffff',
     borderRadius: 8,
     fontFamily: 'Pretendard',
     fontSize: 14,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   enterButton: {
     width: 140,
     paddingVertical: 10,
-    backgroundColor: 'rgb(188, 214, 172)',
+    backgroundColor: '#bcd6ac',
     borderRadius: 8,
   },
   enterButtonLabel: {
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   },
   textBold: {
     fontWeight: '700',
-    color: 'rgb(143, 172, 121)',
+    color: '#8fac79',
   },
 
   clover01: {
