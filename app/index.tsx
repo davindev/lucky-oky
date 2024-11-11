@@ -87,6 +87,12 @@ export default function HomeScreen() {
       <Draggable x={100} y={600}>
         <Text style={styles.clover05}>🍀</Text>
       </Draggable>
+      <Draggable x={-60} y={740}>
+        <Text style={styles.clover06}>☘️</Text>
+      </Draggable>
+      <Draggable x={300} y={700}>
+        <Text style={styles.clover07}>☘️</Text>
+      </Draggable>
 
       <View style={styles.inner}>
         <Image
@@ -236,5 +242,12 @@ const styles = StyleSheet.create({
   clover05: {
     fontSize: 145,
     transform: 'rotate(-40deg)',
+  },
+  clover06: {
+    fontSize: 145,
+    transform: 'rotate(120deg)',
+  },
+  clover07: {
+    fontSize: 145,
   },
 });
