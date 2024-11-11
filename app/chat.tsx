@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
   },
 
   backButton: {
-    paddingTop: 30,
-    paddingBottom: 14,
+    paddingTop: 58,
+    paddingBottom: 16,
     paddingHorizontal: 20,
   },
   backIcon: {
@@ -269,8 +269,8 @@ const styles = StyleSheet.create({
   messageForm: {
     columnGap: 6,
     flexDirection: 'row',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    padding: 20,
+    paddingBottom: 50,
   },
   messageInput: {
     flex: 1,
