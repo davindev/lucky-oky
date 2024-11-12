@@ -21,6 +21,7 @@ export default function HomeScreen() {
   const [nickname, setNickname] = useState('');
 
   const batteryLevel = useBatteryLevel();
+  const isBatteryLevelHigh = batteryLevel > MAX_BATTERY_LEVEL;
 
   const { setUser } = useContext(UserContext);
 
@@ -60,16 +61,6 @@ export default function HomeScreen() {
     router.push('/chat');
   }, [router, createUser]);
 
-  if (batteryLevel > MAX_BATTERY_LEVEL) {
-    return (
-      <View style={styles.container}>
-        <Text>
-          배터리가 {MAX_BATTERY_LEVEL}% 이하일 때 다시 와줬으면 좋겠어~! 💖
-        </Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <Draggable x={280} y={160}>
@@ -100,23 +91,25 @@ export default function HomeScreen() {
           source={require('@/assets/images/logo.png')}
         />
 
-        <View style={styles.nicknameForm}>
-          <TextInput
-            style={styles.nicknameInput}
-            value={nickname}
-            maxLength={10}
-            placeholder="닉네임을 입력해!"
-            placeholderTextColor="rgb(153, 153, 153)"
-            onChangeText={setNickname}
-          />
-          <Pressable
-            style={styles.enterButton}
-            disabled={!nickname}
-            onPress={handleNavigateToChat}
-          >
-            <Text style={styles.enterButtonLabel}>입장하기</Text>
-          </Pressable>
-        </View>
+        {!isBatteryLevelHigh && (
+          <View style={styles.nicknameForm}>
+            <TextInput
+              style={styles.nicknameInput}
+              value={nickname}
+              maxLength={10}
+              placeholder="닉네임을 입력해!"
+              placeholderTextColor="rgb(153, 153, 153)"
+              onChangeText={setNickname}
+            />
+            <Pressable
+              style={styles.enterButton}
+              disabled={!nickname}
+              onPress={handleNavigateToChat}
+            >
+              <Text style={styles.enterButtonLabel}>입장하기</Text>
+            </Pressable>
+          </View>
+        )}
       </View>
 
       <Draggable x={30} y={250}>
@@ -133,11 +126,24 @@ export default function HomeScreen() {
             source={require('@/assets/images/speech_bubble.png')}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.text}>
-              배터리가 <Text style={styles.textBold}>{batteryLevel}%</Text>{' '}
-              남았다니
-            </Text>
-            <Text style={styles.text}>완전 럭키 비키잖앙~! ✨</Text>
+            {isBatteryLevelHigh ? (
+              <>
+                <Text style={styles.text}>
+                  배터리가 {MAX_BATTERY_LEVEL}% 이하일 때
+                </Text>
+                <Text style={styles.text}>
+                  다시 와줘~! 💖
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text style={styles.text}>
+                  배터리가 <Text style={styles.textBold}>{batteryLevel}%</Text>{' '}
+                  남았다니
+                </Text>
+                <Text style={styles.text}>완전 럭키 비키잖앙~! ✨</Text>
+              </>
+            )}
           </View>
         </View>
       </Draggable>
