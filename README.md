@@ -1,50 +1,16 @@
-# Welcome to your Expo app 👋
+# Lucky Oky
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![](/assets/images/readme_1.png)
 
-## Get started
+Lucky Oky는 배터리가 5% 이하일 때만 사용할 수 있는 채팅 앱으로, [Die With Me](https://diewithme.online/)와 거의 동일한 기능을 제공합니다.  
+더 자세한 내용은 [배터리가 없다고?](https://velog.io/@davin/%EB%B0%B0%ED%84%B0%EB%A6%AC%EA%B0%80-%EC%97%86%EB%8B%A4%EA%B3%A0-0jd7tuni) 포스트를 참고해 주세요.
 
-1. Install dependencies
+## Features
+- 메인 페이지로 진입할 때, 배터리가 5% 이하라면 닉네임을 입력 후 채팅방으로 입장할 수 있습니다.
+- 채팅 페이지에서 배터리가 없는 유저들과 대화를 시작할 수 있습니다.
+- 앱을 사용하다가 배터리가 5%를 초과하면 자동으로 메인 페이지로 이동합니다.
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Skills
+- TypeScript
+- React Native
+- Firebase Firestore
